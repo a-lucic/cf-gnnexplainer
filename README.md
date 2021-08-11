@@ -34,7 +34,7 @@ python train.py --dataset=syn4 --lr=0.1 --beta=0.5 --optimizer=SGD
 python train.py --dataset=syn5 --lr=0.1 --beta=0.5 --optimizer=SGD
 ```
 
->📋  This will create another folder in the main directory called 'results', where the results files will be stores.
+>📋  This will create another folder in the main directory called 'results', where the results files will be stored.
 
 
 ## Evaluation
