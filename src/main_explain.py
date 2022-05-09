@@ -7,7 +7,7 @@ import pickle
 import numpy as np
 import time
 import torch
-from gcn import GCNSynthetic
+from train import GCNSynthetic
 from cf_explanation.cf_explainer import CFExplainer
 from utils.utils import normalize_adj, get_neighbourhood, safe_open
 from torch_geometric.utils import dense_to_sparse
