@@ -34,7 +34,7 @@ class CFExplainer:
 
 		# Instantiate CF model class, load weights from original model
 		self.cf_model = GCNSyntheticPerturb(self.sub_feat.shape[1], n_hid, n_hid,
-		                                    self.num_classes, self.sub_adj, dropout, beta, edge_additions=True)
+		                                    self.num_classes, self.sub_adj, dropout, beta)
 
 		self.cf_model.load_state_dict(self.model.state_dict(), strict=False)
 
@@ -45,7 +45,7 @@ class CFExplainer:
 		for name, param in self.model.named_parameters():
 			print("orig model requires_grad: ", name, param.requires_grad)
 		for name, param in self.cf_model.named_parameters():
-			print("cf model required_grad: ", name, param.requires_grad)
+			print("cf model requires_grad: ", name, param.requires_grad)
 
 
 
@@ -116,15 +116,5 @@ class CFExplainer:
 			            y_pred_new_actual.item(), self.sub_labels[self.new_idx].numpy(),
 			            self.sub_adj.shape[0], loss_total.item(),
 			            loss_pred.item(), loss_graph_dist.item()]
-			
+
 		return(cf_stats, loss_total.item())
-
-
-
-
-
-
-
-
-
-

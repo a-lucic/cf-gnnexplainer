@@ -7,7 +7,7 @@ import pickle
 import numpy as np
 import time
 import torch
-from train import GCNSynthetic
+from gcn import GCNSynthetic
 from cf_explanation.cf_explainer import CFExplainer
 from utils.utils import normalize_adj, get_neighbourhood, safe_open
 from torch_geometric.utils import dense_to_sparse
@@ -29,7 +29,6 @@ parser.add_argument('--optimizer', type=str, default="SGD", help='SGD or Adadelt
 parser.add_argument('--n_momentum', type=float, default=0.0, help='Nesterov momentum')
 parser.add_argument('--beta', type=float, default=0.5, help='Tradeoff for dist loss')
 parser.add_argument('--num_epochs', type=int, default=500, help='Num epochs for explainer')
-parser.add_argument('--edge_additions', type=int, default=0, help='Include edge additions?')
 parser.add_argument('--device', default='cpu', help='CPU or GPU.')
 args = parser.parse_args()
 
@@ -75,7 +74,7 @@ print("y_pred_orig counts: {}".format(np.unique(y_pred_orig.numpy(), return_coun
 # Get CF examples in test set
 test_cf_examples = []
 start = time.time()
-for i in idx_test[:20]:
+for i in idx_test[:]:
 	sub_adj, sub_feat, sub_labels, node_dict = get_neighbourhood(int(i), edge_index, args.n_layers + 1, features, labels)
 	new_idx = node_dict[int(i)]
 
@@ -108,7 +107,7 @@ for i in idx_test[:20]:
 		idx_test = idx_test.cuda()
 
 	cf_example = explainer.explain(node_idx=i, cf_optimizer=args.optimizer, new_idx=new_idx, lr=args.lr,
-	                               n_momentum=args.n_momentum, num_epochs=args.num_epochs, node_dict=node_dict)     # Need node dict for accuracy calculation
+	                               n_momentum=args.n_momentum, num_epochs=args.num_epochs)
 	test_cf_examples.append(cf_example)
 	print("Time for {} epochs of one example: {:.4f}min".format(args.num_epochs, (time.time() - start)/60))
 print("Total time elapsed: {:.4f}s".format((time.time() - start)/60))
@@ -116,11 +115,6 @@ print("Number of CF examples found: {}/{}".format(len(test_cf_examples), len(idx
 
 # Save CF examples in test set
 
-if args.edge_additions == 1:
-	with safe_open("../results_incl_additions/{}/{}/{}_cf_examples_lr{}_beta{}_mom{}_epochs{}".format(args.dataset, args.optimizer, args.dataset,
-																		args.lr, args.beta, args.n_momentum, args.num_epochs), "wb") as f:
-		pickle.dump(test_cf_examples, f)
-elif args.edge_additions == 0:
-	with safe_open("../results/{}/{}/{}_cf_examples_lr{}_beta{}_mom{}_epochs{}".format(args.dataset, args.optimizer, args.dataset,
-																		args.lr, args.beta, args.n_momentum, args.num_epochs), "wb") as f:
-		pickle.dump(test_cf_examples, f)
+with safe_open("../results/test_seed/{}/{}/{}_cf_examples_lr{}_beta{}_mom{}_epochs{}_seed{}".format(args.dataset, args.optimizer, args.dataset,
+																	args.lr, args.beta, args.n_momentum, args.num_epochs, args.seed), "wb") as f:
+	pickle.dump(test_cf_examples, f)
