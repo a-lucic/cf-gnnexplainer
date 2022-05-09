@@ -1,7 +1,6 @@
 # CF-GNNExplainer: Counterfactual Explanations for Graph Neural Networks
 
-This repository is the official implementation of the paper CF-GNNExplainer: Counterfactual Explanations for Graph Neural Networks. 
-
+This repository is the official implementation of the [AISTATS 2022 paper CF-GNNExplainer: Counterfactual Explanations for Graph Neural Networks](https://arxiv.org/abs/2102.03322). 
 
 ## Requirements
 
