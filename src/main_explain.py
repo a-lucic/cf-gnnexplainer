@@ -115,6 +115,6 @@ print("Number of CF examples found: {}/{}".format(len(test_cf_examples), len(idx
 
 # Save CF examples in test set
 
-with safe_open("../results/test_seed/{}/{}/{}_cf_examples_lr{}_beta{}_mom{}_epochs{}_seed{}".format(args.dataset, args.optimizer, args.dataset,
+with safe_open("../results/{}/{}/{}_cf_examples_lr{}_beta{}_mom{}_epochs{}_seed{}".format(args.dataset, args.optimizer, args.dataset,
 																	args.lr, args.beta, args.n_momentum, args.num_epochs, args.seed), "wb") as f:
 	pickle.dump(test_cf_examples, f)
