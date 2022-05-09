@@ -38,12 +38,12 @@ python main_explain.py --dataset=syn5 --lr=0.1 --beta=0.5 --optimizer=SGD
 
 ## Evaluation
 
-To evaluate the CF examples, loop over all the files in the results folder by running the following command:
+To evaluate the CF examples, run the following command:
 
 ```eval
-python evaluate.py
+python evaluate.py --path=../results/<NAME OF RESULTS FILE>
 ```
->📋  This will print out the values for each metric, for each results file.
+>📋  This will print out the values for each metric.
 
 ## Pre-trained Models
 
