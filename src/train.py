@@ -13,8 +13,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 from torch.nn.utils import clip_grad_norm
 from gcn import GCNSynthetic
-from utils.utils import normalize_adj
-from torch_geometric.utils import accuracy
+from utils.utils import normalize_adj, classification_accuracy
 
 # Defaults based on GNN Explainer
 parser = argparse.ArgumentParser()
@@ -72,7 +71,7 @@ def train(epoch):
 	output = model(features, norm_adj)
 	loss_train = model.loss(output[idx_train], labels[idx_train])
 	y_pred = torch.argmax(output, dim=1)
-	acc_train = accuracy(y_pred[idx_train], labels[idx_train])
+	acc_train = classification_accuracy(y_pred[idx_train], labels[idx_train])
 	loss_train.backward()
 	clip_grad_norm(model.parameters(), args.clip)
 	optimizer.step()
@@ -88,7 +87,7 @@ def test():
 	output = model(features, norm_adj)
 	loss_test = F.nll_loss(output[idx_test], labels[idx_test])
 	y_pred = torch.argmax(output, dim=1)
-	acc_test = accuracy(y_pred[idx_test], labels[idx_test])
+	acc_test = classification_accuracy(y_pred[idx_test], labels[idx_test])
 	print("Test set results:",
 		  "loss= {:.4f}".format(loss_test.item()),
 		  "accuracy= {:.4f}".format(acc_test))

@@ -21,6 +21,9 @@ def safe_open(path, w):
 	mkdir_p(os.path.dirname(path))
 	return open(path, w)
 
+def classification_accuracy(pred, target):
+	return (pred == target).sum().item() / target.numel()
+
 
 def accuracy(output, labels):
 	preds = output.max(1)[1].type_as(labels)
